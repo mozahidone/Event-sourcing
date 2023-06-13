@@ -13,6 +13,6 @@ import org.springframework.test.context.ActiveProfiles;
     topics = {KafkaTopicsConfig.TOPIC_PAYMENT_INTEGRATION_EVENTS})
 class EventStoreDbEventSourcingApplicationTests {
 
-  /*@Test
-  void contextLoads() {}*/
+  @Test
+  void contextLoads() {}
 }
