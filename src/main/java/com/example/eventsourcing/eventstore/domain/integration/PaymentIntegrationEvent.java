@@ -6,9 +6,12 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.Value;
 
-@Value
+@Getter
+@Setter
 @Builder
 public class PaymentIntegrationEvent {
 
@@ -35,4 +38,7 @@ public class PaymentIntegrationEvent {
 
   @JsonProperty("account")
   List<Account> account;
+
+  @JsonProperty("correlation_id")
+  UUID correlationId;
 }

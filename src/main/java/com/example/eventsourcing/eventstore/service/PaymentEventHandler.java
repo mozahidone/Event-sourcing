@@ -1,6 +1,8 @@
 package com.example.eventsourcing.eventstore.service;
 
+import com.example.eventsourcing.eventstore.domain.integration.PaymentIntegrationEvent;
 import com.example.eventsourcing.eventstore.domain.writemodel.Payment;
+import com.example.eventsourcing.eventstore.domain.writemodel.event.PaymentSuccessfulEvent;
 import com.example.eventsourcing.eventstore.eventsourcing.Event;
 import com.example.eventsourcing.eventstore.mapper.PaymentMapper;
 import java.util.List;
@@ -27,6 +29,10 @@ public class PaymentEventHandler {
     List<Event> events = eventStore.readEvents(paymentId);
     Payment payment = new Payment(paymentId, events);
     readModelUpdater.saveOrUpdate(mapper.toReadModel(payment));
-    integrationEventSender.send(mapper.toIntegrationEvent(event, payment));
+    if(event instanceof PaymentSuccessfulEvent) {
+      PaymentIntegrationEvent integrationEvent = mapper.toIntegrationEvent(event, payment);
+      integrationEvent.setCorrelationId(UUID.randomUUID()); // Set the correlationId field to a new UUID
+      integrationEventSender.send(integrationEvent);
+    }
   }
 }
