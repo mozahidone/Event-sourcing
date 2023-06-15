@@ -26,16 +26,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/payment")
+@RequestMapping("/account")
 @RequiredArgsConstructor
-public class PaymentController {
+public class AccountController {
 
   private final ObjectMapper objectMapper;
   private final PaymentCommandHandler commandHandler;
   private final PaymentRepository paymentRepository;
 
   @PostMapping
-  public ResponseEntity<JsonNode> makePayment(@RequestBody JsonNode request) throws IOException {
+  public ResponseEntity<JsonNode> postPayment(@RequestBody JsonNode request) throws IOException {
     UUID paymentId = UUID.randomUUID();
     PaymentStatus newStatus = PaymentStatus.valueOf(request.get("status").asText());
 
