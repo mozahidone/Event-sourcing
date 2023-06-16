@@ -3,20 +3,21 @@ package com.example.eventsourcing.eventstore.domain.writemodel.event;
 import com.example.eventsourcing.eventstore.eventsourcing.Event;
 import lombok.*;
 
-import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class PaymentFailedEvent extends Event {
+public class AccountCreatedEvent extends Event {
 
-  private BigDecimal amount;
+  private String name;
+  private String address;
 
   @Builder
-  public PaymentFailedEvent(UUID aggregateId, BigDecimal amount) {
+  public AccountCreatedEvent(UUID aggregateId, String name, String address) {
     super(aggregateId);
-    this.amount = amount;
+    this.name = name;
+    this.address = address;
   }
 }

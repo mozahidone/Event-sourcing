@@ -1,14 +1,9 @@
 package com.example.eventsourcing.eventstore.controller;
 
-import com.example.eventsourcing.eventstore.domain.readmodel.Payment;
-import com.example.eventsourcing.eventstore.domain.writemodel.PaymentStatus;
-import com.example.eventsourcing.eventstore.domain.writemodel.command.PaymentCreatedCommand;
-import com.example.eventsourcing.eventstore.domain.writemodel.command.PaymentFailedCommand;
-import com.example.eventsourcing.eventstore.domain.writemodel.command.ResolutionPaymentCommand;
-import com.example.eventsourcing.eventstore.domain.writemodel.command.PaymentSuccessfulCommand;
-import com.example.eventsourcing.eventstore.repository.PaymentRepository;
-import com.example.eventsourcing.eventstore.service.PaymentCommandHandler;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.example.eventsourcing.eventstore.domain.readmodel.Account;
+import com.example.eventsourcing.eventstore.domain.writemodel.command.*;
+import com.example.eventsourcing.eventstore.repository.AccountRepository;
+import com.example.eventsourcing.eventstore.service.AccountCommandHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -31,73 +26,57 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountController {
 
   private final ObjectMapper objectMapper;
-  private final PaymentCommandHandler commandHandler;
-  private final PaymentRepository paymentRepository;
+  private final AccountCommandHandler commandHandler;
+  private final AccountRepository accountRepository;
 
   @PostMapping
-  public ResponseEntity<JsonNode> postPayment(@RequestBody JsonNode request) throws IOException {
-    UUID paymentId = UUID.randomUUID();
-    PaymentStatus newStatus = PaymentStatus.valueOf(request.get("status").asText());
-
-    switch (newStatus) {
-      case CREATED:
-        commandHandler.process(
-                PaymentCreatedCommand.builder()
-                        .aggregateId(paymentId)
-                        .accountId(UUID.fromString(request.get("accountId").asText()))
-                        .build());
-        return ResponseEntity.accepted()
-                .body(objectMapper.createObjectNode().put("paymentId", paymentId.toString()));
-      case PAYMENT_FAILED:
-        commandHandler.process(
-                PaymentFailedCommand.builder()
-                        .aggregateId(paymentId)
-                        .accountId(UUID.fromString(request.get("accountId").asText()))
-                        .paymentSuccessFlag(false)
-                        .build());
-        return ResponseEntity.accepted()
-                .body(objectMapper.createObjectNode().put("paymentId", paymentId.toString()));
-      case PAYMENT_SUCCESSFUL:
-        commandHandler.process(
-                PaymentSuccessfulCommand.builder()
-                        .aggregateId(paymentId)
-                        .accountId(UUID.fromString(request.get("accountId").asText()))
-                        .paymentSuccessFlag(true)
-                        .account(
-                                objectMapper.readValue(
-                                        objectMapper.treeAsTokens(request.get("account")), new TypeReference<>() {}))
-                        .build());
-        return ResponseEntity.accepted()
-                .body(objectMapper.createObjectNode().put("paymentId", paymentId.toString()));
-      default:
-        return ResponseEntity.badRequest().build();
-    }
-
+  public ResponseEntity<JsonNode> createAccount(@RequestBody JsonNode request) throws IOException {
+    UUID accountId = UUID.randomUUID();
+    commandHandler.process(
+            CreateAccountCommand.builder()
+                    .aggregateId(accountId)
+                    .name(request.get("name").asText())
+                    .address(request.get("address").asText())
+                    .build());
+    return ResponseEntity.accepted()
+            .body(objectMapper.createObjectNode().put("accountId", accountId.toString()));
 
   }
 
-  @PatchMapping("/{paymentId}")
-  public ResponseEntity<?> resolutionPayment(@PathVariable UUID paymentId, @RequestBody JsonNode request) {
+  @PatchMapping("/{accountId}")
+  public ResponseEntity<?> updateAccount(@PathVariable UUID accountId, @RequestBody JsonNode request) {
     int revision = request.get("revision").asInt();
     commandHandler.process(
-            ResolutionPaymentCommand.builder()
-                    .aggregateId(paymentId)
+            UpdateAccountCommand.builder()
+                    .aggregateId(accountId)
                     .expectedRevision(revision)
-                    .accountId(UUID.fromString(request.get("accountId").asText()))
+                    .address(request.get("address").asText())
+                    .build());
+    return ResponseEntity.accepted().build();
+  }
+
+  @PatchMapping("/payment/{accountId}")
+  public ResponseEntity<?> paymentAccount(@PathVariable UUID accountId, @RequestBody JsonNode request) {
+    int revision = request.get("revision").asInt();
+    commandHandler.process(
+            PaymentAccountCommand.builder()
+                    .aggregateId(accountId)
+                    .expectedRevision(revision)
                     .amount(new BigDecimal(request.get("amount").asText()))
+                    .type(request.get("type").asText())
                     .build());
     return ResponseEntity.accepted().build();
   }
 
   @GetMapping("/")
-  public ResponseEntity<List<Payment>> getPayments() {
-    return ResponseEntity.ok(paymentRepository.findAll());
+  public ResponseEntity<List<Account>> getAccounts() {
+    return ResponseEntity.ok(accountRepository.findAll());
   }
 
-  @GetMapping("/{paymentId}")
-  public ResponseEntity<Payment> getPayment(@PathVariable UUID paymentId) {
-    return paymentRepository
-        .findById(paymentId)
+  @GetMapping("/{accountId}")
+  public ResponseEntity<Account> getAccount(@PathVariable UUID accountId) {
+    return accountRepository
+        .findById(accountId)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
   }

@@ -37,10 +37,10 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class PaymentEventStore {
+public class AccountEventStore {
 
-  private static final String ORDER_BY_CATEGORY_STREAM_NAME = "$ce-payment";
-  private static final String ORDER_STREAM_NAME_PREFIX = "payment-";
+  private static final String ORDER_BY_CATEGORY_STREAM_NAME = "$ce-account";
+  private static final String ORDER_STREAM_NAME_PREFIX = "account-";
 
   private final EventStoreDbProperties properties;
   private final EventJsonSerde jsonSerde;

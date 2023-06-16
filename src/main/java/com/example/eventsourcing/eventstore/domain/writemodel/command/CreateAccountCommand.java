@@ -9,14 +9,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class PaymentFailedCommand extends Command {
+public class CreateAccountCommand extends Command {
 
-  private UUID accountId;
-  private Boolean paymentSuccessFlag;
+  private String name;
+  private String address;
   @Builder
-  public PaymentFailedCommand(UUID aggregateId, UUID accountId, Boolean paymentSuccessFlag) {
+  public CreateAccountCommand(UUID aggregateId, String name, String address) {
     super(aggregateId, -1);
-    this.accountId = accountId;
-    this.paymentSuccessFlag = paymentSuccessFlag;
+    this.name = name;
+    this.address = address;
   }
 }

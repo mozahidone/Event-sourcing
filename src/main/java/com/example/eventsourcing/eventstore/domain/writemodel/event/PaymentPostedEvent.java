@@ -10,13 +10,15 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class PaymentFailedEvent extends Event {
+public class PaymentPostedEvent extends Event {
 
   private BigDecimal amount;
+  private String type;
 
   @Builder
-  public PaymentFailedEvent(UUID aggregateId, BigDecimal amount) {
+  public PaymentPostedEvent(UUID aggregateId, BigDecimal amount, String type) {
     super(aggregateId);
     this.amount = amount;
+    this.type = type;
   }
 }

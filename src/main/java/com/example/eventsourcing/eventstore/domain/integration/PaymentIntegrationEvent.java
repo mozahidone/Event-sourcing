@@ -1,17 +1,15 @@
 package com.example.eventsourcing.eventstore.domain.integration;
 
-import com.example.eventsourcing.eventstore.domain.writemodel.PaymentStatus;
+import com.example.eventsourcing.eventstore.domain.writemodel.AccountStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.Value;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Value;
 
-@Getter
-@Setter
+@Value
 @Builder
 public class PaymentIntegrationEvent {
 
@@ -28,7 +26,7 @@ public class PaymentIntegrationEvent {
   int revision;
 
   @JsonProperty("status")
-  PaymentStatus status;
+  AccountStatus status;
 
   @JsonProperty("account_id")
   UUID accountId;
