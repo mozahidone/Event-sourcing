@@ -9,24 +9,27 @@ import org.springframework.data.domain.Persistable;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Accounts")
+@Table(name = "PAYMENTS")
 @Data
 @EqualsAndHashCode(exclude = "id")
-public class Account implements Persistable<UUID>, Serializable {
+public class Payment implements Persistable<UUID>, Serializable {
 
   @Id private UUID id;
   private int revision;
 
+  private UUID accountId;
+
+  private UUID coRelationId;
+
   @Enumerated(EnumType.STRING)
   private AccountStatus status;
 
-  private String name;
-  private String address;
-  private BigDecimal balance;
+  long paymentDate;
+
+  private BigDecimal amount;
 
   @JsonIgnore
   @Override

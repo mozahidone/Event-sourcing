@@ -1,14 +1,17 @@
 package com.example.eventsourcing.eventstore.controller;
 
 import com.example.eventsourcing.eventstore.domain.readmodel.Account;
+import com.example.eventsourcing.eventstore.domain.readmodel.Payment;
 import com.example.eventsourcing.eventstore.domain.writemodel.command.*;
 import com.example.eventsourcing.eventstore.repository.AccountRepository;
+import com.example.eventsourcing.eventstore.repository.PaymentRepository;
 import com.example.eventsourcing.eventstore.service.AccountCommandHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,15 +31,16 @@ public class AccountController {
   private final ObjectMapper objectMapper;
   private final AccountCommandHandler commandHandler;
   private final AccountRepository accountRepository;
+  private final PaymentRepository paymentRepository;
 
   @PostMapping
-  public ResponseEntity<JsonNode> createAccount(@RequestBody JsonNode request) throws IOException {
+  public ResponseEntity<JsonNode> createAccount(@RequestBody Map<String, String> request) throws IOException {
     UUID accountId = UUID.randomUUID();
     commandHandler.process(
             CreateAccountCommand.builder()
                     .aggregateId(accountId)
-                    .name(request.get("name").asText())
-                    .address(request.get("address").asText())
+                    .name(request.get("name"))
+                    .address(request.get("address"))
                     .build());
     return ResponseEntity.accepted()
             .body(objectMapper.createObjectNode().put("accountId", accountId.toString()));
@@ -79,5 +83,10 @@ public class AccountController {
         .findById(accountId)
         .map(ResponseEntity::ok)
         .orElse(ResponseEntity.notFound().build());
+  }
+
+  @GetMapping("/payment")
+  public ResponseEntity<List<Payment>> getPayments() {
+    return ResponseEntity.ok(paymentRepository.findTop5ByOrderByPaymentDateDesc());
   }
 }

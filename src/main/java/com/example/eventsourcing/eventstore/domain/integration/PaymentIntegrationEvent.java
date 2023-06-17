@@ -6,15 +6,14 @@ import lombok.Builder;
 import lombok.Value;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 
 @Value
 @Builder
 public class PaymentIntegrationEvent {
 
-  @JsonProperty("payment_id")
-  UUID paymentId;
+  @JsonProperty("account_id")
+  UUID accountId;
 
   @JsonProperty("event_type")
   String eventType;
@@ -28,14 +27,8 @@ public class PaymentIntegrationEvent {
   @JsonProperty("status")
   AccountStatus status;
 
-  @JsonProperty("account_id")
-  UUID accountId;
-
   @JsonProperty("amount")
   BigDecimal amount;
-
-  @JsonProperty("account")
-  List<Account> account;
 
   @JsonProperty("correlation_id")
   UUID correlationId;

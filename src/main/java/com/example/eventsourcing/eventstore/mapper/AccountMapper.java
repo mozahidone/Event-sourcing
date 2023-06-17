@@ -14,14 +14,15 @@ public interface AccountMapper {
 
   @Mapping(source = "aggregateId", target = "id")
   @Mapping(source = "baseRevision", target = "revision")
+  @Mapping(source = "amount", target = "balance")
   com.example.eventsourcing.eventstore.domain.readmodel.Account toReadModel(Account account);
 
-  @Mapping(source = "account.aggregateId", target = "paymentId")
+  @Mapping(source = "account.aggregateId", target = "accountId")
   @Mapping(source = "event.eventType", target = "eventType")
   @Mapping(source = "event.createdDate", target = "eventTimestamp")
   @Mapping(source = "account.baseRevision", target = "revision")
-  @Mapping(source = "account.accountId", target = "accountId")
-  @Mapping(source = "payment.amount", target = "amount")
+  @Mapping(source = "account.correlationId", target = "correlationId")
+  @Mapping(source = "account.amount", target = "amount")
   PaymentIntegrationEvent toIntegrationEvent(Event event, Account account);
 
 /*  com.example.eventsourcing.eventstore.domain.readmodel.Account toReadModel(Account value);

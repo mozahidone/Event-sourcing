@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Payment Form</title>
+</head>
+<body>
+<h1>Make a Payment</h1>
+<form method="post" th:action="@{/account/payment/{accountId}(accountId=${account.id})}">
+    <input type="hidden" name="revision" value="0"/>
+
+    <label for="amount">Amount:</label>
+    <input type="text" id="amount" name="amount"><br>
+
+    <label for="type">Type:</label>
+    <select id="type" name="type">
+        <option value="credit">Success</option>
+        <option value="debit">Failure</option>
+    </select><br>
+
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>

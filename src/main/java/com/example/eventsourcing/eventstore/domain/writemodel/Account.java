@@ -24,7 +24,7 @@ public class Account extends Aggregate {
 
   private String name;
   private String address;
-  private UUID coRelationId;
+  private UUID correlationId;
   private BigDecimal amount;
   private String type;
 
@@ -66,7 +66,7 @@ public class Account extends Aggregate {
             .amount(command.getAmount())
             .type(command.getType())
             .build());
-    if (command.getType().equalsIgnoreCase("")) {
+    if (command.getType().equalsIgnoreCase("Success")) {
       applyChange(
               PaymentSucceededEvent.builder()
                       .aggregateId(aggregateId)
@@ -82,7 +82,7 @@ public class Account extends Aggregate {
   }
 
   public void apply(AccountCreatedEvent event) {
-    this.coRelationId = event.getCoRelationId();
+    this.correlationId = event.getCorrelationId();
     this.status = AccountStatus.CREATED;
     this.name = event.getName();
     this.address = event.getAddress();
@@ -90,14 +90,14 @@ public class Account extends Aggregate {
   }
 
   public void apply(AccountUpdatedEvent event) {
-    this.coRelationId = event.getCoRelationId();
+    this.correlationId = event.getCorrelationId();
     this.status = AccountStatus.UPDATED;
     this.address = event.getAddress();
     this.updatedDate = event.getCreatedDate();
   }
 
   public void apply(PaymentPostedEvent event) {
-    this.coRelationId = event.getCoRelationId();
+    this.correlationId = event.getCorrelationId();
     this.status = AccountStatus.PAYMENT_POSTED;
     this.amount = event.getAmount();
     this.type = event.getType();
@@ -105,14 +105,14 @@ public class Account extends Aggregate {
   }
 
   public void apply(PaymentSucceededEvent event) {
-    this.coRelationId = event.getCoRelationId();
+    this.correlationId = event.getCorrelationId();
     this.status = AccountStatus.PAYMENT_SUCCEEDED;
     this.amount = event.getAmount();
     this.paymentDate = event.getCreatedDate();
   }
 
   public void apply(PaymentFailedEvent event) {
-    this.coRelationId = event.getCoRelationId();
+    this.correlationId = event.getCorrelationId();
     this.status = AccountStatus.PAYMENT_FAILED;
     this.amount = event.getAmount();
     this.failedDate = event.getCreatedDate();
