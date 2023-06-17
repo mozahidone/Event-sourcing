@@ -22,7 +22,7 @@ public class Payment implements Persistable<UUID>, Serializable {
 
   private UUID accountId;
 
-  private UUID coRelationId;
+  private UUID correlationId;
 
   @Enumerated(EnumType.STRING)
   private AccountStatus status;

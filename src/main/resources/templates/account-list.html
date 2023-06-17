@@ -2,6 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Account List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
 </head>
 <body>
 <h1>Account List</h1>
@@ -22,8 +25,8 @@
         <td th:text="${account.address}"></td>
         <td th:text="${account.balance}"></td>
         <td>
-            <a th:href="@{/account/{accountId}/edit(accountId=${account.id})}">Update</a>
-            <a th:href="@{/account/paymentView/{accountId}(accountId=${account.id})}">Payment</a>
+            <a th:href="@{/account/edit(accountId=${account.id})}">Update</a>
+            <a th:href="@{/account/paymentView(accountId=${account.id})}">Payment</a>
         </td>
     </tr>
     </tbody>

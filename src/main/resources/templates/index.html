@@ -2,12 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>My Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../static/style.css">
 </head>
 <body>
 <h1>Last Five Payments</h1>
 <table>
     <thead>
     <tr>
+        <th>Account ID</th>
+        <th>Correlation Id</th>
         <th>Amount</th>
         <th>Status</th>
         <th>Date</th>
@@ -15,9 +20,11 @@
     </thead>
     <tbody>
     <tr th:each="payment : ${payments}">
-        <td th:text="${payment.amount}">Amount</td>
-        <td th:text="${payment.status}">Status</td>
-        <td th:text="${payment.paymentDate}">Date</td>
+        <td th:text="${payment.accountId}"></td>
+        <td th:text="${payment.correlationId}"></td>
+        <td th:text="${payment.amount}"></td>
+        <td th:text="${payment.status}"></td>
+        <td th:text="${payment.paymentDate}"></td>
     </tr>
     </tbody>
 </table>

@@ -41,7 +41,7 @@ public class PaymentIntegrationEventConsumer {
                 payment.setPaymentDate(event.getEventTimestamp());
                 payment.setAccountId(event.getAccountId());
                 payment.setAmount(event.getAmount());
-                payment.setCoRelationId(event.getCorrelationId());
+                payment.setCorrelationId(event.getCorrelationId());
                 paymentRepository.save(payment);
             }
         } catch (Exception e) {
