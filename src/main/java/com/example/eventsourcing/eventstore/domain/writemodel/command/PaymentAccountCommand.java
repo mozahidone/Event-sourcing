@@ -14,15 +14,15 @@ import lombok.ToString;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class ResolutionPaymentCommand extends Command {
+public class PaymentAccountCommand extends Command {
 
-  private UUID accountId;
   private BigDecimal amount;
+  private String type;
 
   @Builder
-  public ResolutionPaymentCommand(UUID aggregateId, int expectedRevision, UUID accountId, BigDecimal amount) {
+  public PaymentAccountCommand(UUID aggregateId, int expectedRevision, BigDecimal amount, String type) {
     super(aggregateId, expectedRevision);
-    this.accountId = accountId;
     this.amount = amount;
+    this.type = type;
   }
 }

@@ -9,15 +9,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-public class PaymentCreatedEvent extends Event {
+public class AccountUpdatedEvent extends Event {
 
-  private UUID accountId;
-  private Boolean paymentSuccessFlag;
+  private String address;
 
   @Builder
-  public PaymentCreatedEvent(UUID aggregateId, UUID accountId, Boolean paymentSuccessFlag) {
+  public AccountUpdatedEvent(UUID aggregateId, String address) {
     super(aggregateId);
-    this.accountId = accountId;
-    this.paymentSuccessFlag = paymentSuccessFlag;
+    this.address = address;
   }
 }

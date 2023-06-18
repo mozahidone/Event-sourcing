@@ -12,6 +12,7 @@ public abstract class Event {
   protected UUID aggregateId;
   protected long revision;
   protected Instant createdDate = Instant.now();
+  protected UUID correlationId = UUID.randomUUID();
 
   public Event(UUID aggregateId) {
     this.aggregateId = aggregateId;

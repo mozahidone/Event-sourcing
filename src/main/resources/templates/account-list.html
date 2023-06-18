@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Account List</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+<div class="header">
+    <h1>Account List</h1>
+    <a href="/create-account">Create Account</a>
+</div>
+<table>
+    <thead>
+    <tr>
+        <th>Account ID</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Balance</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="account : ${accounts}">
+        <td th:text="${account.id}"></td>
+        <td th:text="${account.name}"></td>
+        <td th:text="${account.address}"></td>
+        <td th:text="${account.balance}"></td>
+        <td>
+            <a th:href="@{/account/edit(accountId=${account.id})}">Update</a>
+            <a th:href="@{/account/paymentView(accountId=${account.id})}">Payment</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

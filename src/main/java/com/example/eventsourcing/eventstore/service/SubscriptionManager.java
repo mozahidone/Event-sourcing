@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 public class SubscriptionManager {
 
   private final EventStoreDbProperties properties;
-  private final PaymentEventStore eventStore;
-  private final PaymentEventHandler eventHandler;
+  private final AccountEventStore eventStore;
+  private final AccountEventHandler eventHandler;
 
   @PostConstruct
   public void init() {

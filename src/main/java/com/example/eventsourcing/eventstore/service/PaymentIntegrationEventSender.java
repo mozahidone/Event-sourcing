@@ -24,7 +24,7 @@ public class PaymentIntegrationEventSender {
     log.debug("Publishing integration event {}", event);
     kafkaTemplate.send(
         KafkaTopicsConfig.TOPIC_PAYMENT_INTEGRATION_EVENTS,
-        event.getPaymentId().toString(),
+        event.getAccountId().toString(),
         objectMapper.writeValueAsString(event));
   }
 }

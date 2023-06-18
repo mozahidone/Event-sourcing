@@ -1,6 +1,6 @@
 package com.example.eventsourcing.eventstore.service;
 
-import com.example.eventsourcing.eventstore.domain.writemodel.event.PaymentSuccessfulEvent;
+import com.example.eventsourcing.eventstore.domain.writemodel.event.PaymentPostedEvent;
 import com.example.eventsourcing.eventstore.eventsourcing.Event;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +26,6 @@ public class EventJsonSerde {
 
   @SuppressWarnings("unchecked")
   private Class<Event> toClass(String eventType) throws ClassNotFoundException {
-    return (Class<Event>) Class.forName(PaymentSuccessfulEvent.class.getPackageName() + "." + eventType);
+    return (Class<Event>) Class.forName(PaymentPostedEvent.class.getPackageName() + "." + eventType);
   }
 }
