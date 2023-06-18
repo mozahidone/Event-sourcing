@@ -52,8 +52,10 @@
                     data: JSON.stringify(formData),
                     contentType: 'application/json',
                     dataType: 'json',
-                    success: function(data) {
-                        alert('Payment processed successfully!');
+                    success: function(data, textStatus, xhr) {
+                        if (xhr.status === 202) {
+                            alert('Payment processed successfully!');
+                        }
                     },
                    error: function(xhr, status, error) {
                         alert('Error processing payment: ' + error);
